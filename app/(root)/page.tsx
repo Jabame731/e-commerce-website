@@ -1,11 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import Image from "next/image";
+import sampleData from "@/db/sample-data";
+import ProductList from "@/components/shared/products/product-list";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div>
-      <Button>Submit</Button>;
-    </div>
+    <>
+      <ProductList
+        data={sampleData.products}
+        title="Newest Arrivals"
+        limit={4}
+      />
+    </>
   );
-}
+};
+
+export default Home;
