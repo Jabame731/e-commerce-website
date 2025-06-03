@@ -1,17 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Metadata } from "next";
-import Image from "next/image";
-import sampleData from "@/db/sample-data";
 import ProductList from "@/components/shared/products/product-list";
 
-const Home = () => {
+import { getLatestProducts } from "@/lib/actions/product.actions";
+
+const Home = async () => {
+  const latestProducts = await getLatestProducts();
+
   return (
     <>
-      <ProductList
-        data={sampleData.products}
-        title="Newest Arrivals"
-        limit={4}
-      />
+      <ProductList data={latestProducts} title="Newest Arrivals" />
     </>
   );
 };
