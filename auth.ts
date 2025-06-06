@@ -5,6 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt-ts-edge";
 import type { NextAuthConfig } from "next-auth";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export const config = {
   pages: {
@@ -73,6 +74,7 @@ export const config = {
     async jwt({ token, user, trigger, session }: any) {
       //assign user fields to the token
       if (user) {
+        token.id = user.id;
         token.role = user.role;
 
         //if the user has no name then use email
@@ -85,10 +87,80 @@ export const config = {
             data: { name: token.name },
           });
         }
+
+        // if (trigger === "signIn" || trigger === "signUp") {
+        //   const cookiesObj = await cookies();
+
+        //   const sessionCartId = cookiesObj.get("sessionCartId")?.value;
+
+        //   if (sessionCartId) {
+        //     const sessionCart = await prisma.cart.findFirst({
+        //       where: { sessionCartId },
+        //     });
+
+        //     if (sessionCart) {
+        //       //delete current user cart
+        //       await prisma.cart.deleteMany({
+        //         where: { userId: user.id },
+        //       });
+
+        //       //assign new cart
+        //       await prisma.cart.update({
+        //         where: { id: sessionCart.id },
+        //         data: {
+        //           userId: user.id,
+        //         },
+        //       });
+        //     }
+        //   }
+        // }
+
+        if (["signIn", "signUp"].includes(trigger)) {
+          const cookiesObject = await cookies();
+          const sessionCartId = cookiesObject.get("sessionCartId")?.value;
+
+          const sessionCart = await prisma.cart.findFirst({
+            where: { sessionCartId },
+          });
+
+          if (!sessionCart) return;
+
+          if (sessionCart.userId !== user.id) {
+            console.log("runs here");
+
+            // Delete current user cart
+            await prisma.cart.deleteMany({
+              where: { userId: user.id },
+            });
+
+            // Assign new cart
+            await prisma.cart.update({
+              where: { id: sessionCart.id },
+              data: { userId: user.id },
+            });
+          }
+        }
       }
       return token;
     },
     authorized({ request, auth }: any) {
+      //array of regular expression of paths we want to protect
+      const protectedPaths = [
+        /\/shipping-address/,
+        /\/payment-method/,
+        /\/place-order/,
+        /\/profile/,
+        /\/user\/(.*)/,
+        /\/order\/(.*)/,
+        /\/admin/,
+      ];
+
+      //get pathname from the request url object
+      const { pathname } = request.nextUrl;
+
+      //check if user is not authenticated and accessing a protected path
+      if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
+
       // check session cart cookie
       if (!request.cookies.get("sessionCartId")) {
         //Generate new session cart id cookie
