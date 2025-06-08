@@ -19,11 +19,11 @@ export const signUpDefaultValues = {
 };
 
 export const shippingAddressDefaultValues = {
-  fullName: "",
-  streetAddress: "",
-  city: "",
-  postalCode: "",
-  country: "",
+  fullName: "Chariz Mays",
+  streetAddress: "test address ",
+  city: "test city",
+  postalCode: "8002",
+  country: "Philippines",
 };
 
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS

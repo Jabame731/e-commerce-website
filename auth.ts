@@ -33,12 +33,16 @@ export const config = {
           },
         });
 
+        console.log("user && user.password", user && user.password);
+
         //check if user exist and if the password matches
         if (user && user.password) {
           const isMatch = compareSync(
             credentials.password as string,
             user.password
           );
+
+          console.log("ismatch", isMatch);
 
           //if password is correct, return user
           if (isMatch) {
@@ -50,6 +54,13 @@ export const config = {
             };
           }
         }
+
+        console.log("user", {
+          id: user?.id,
+          name: user?.name,
+          email: user?.email,
+          role: user?.role,
+        });
 
         //if user does not exist or password does not match return null
         return null;
@@ -88,56 +99,31 @@ export const config = {
           });
         }
 
-        // if (trigger === "signIn" || trigger === "signUp") {
-        //   const cookiesObj = await cookies();
+        // @ to be fixed
+        if (trigger === "signIn" || trigger === "signUp") {
+          const cookiesObj = await cookies();
 
-        //   const sessionCartId = cookiesObj.get("sessionCartId")?.value;
+          const sessionCartId = cookiesObj.get("sessionCartId")?.value;
 
-        //   if (sessionCartId) {
-        //     const sessionCart = await prisma.cart.findFirst({
-        //       where: { sessionCartId },
-        //     });
-
-        //     if (sessionCart) {
-        //       //delete current user cart
-        //       await prisma.cart.deleteMany({
-        //         where: { userId: user.id },
-        //       });
-
-        //       //assign new cart
-        //       await prisma.cart.update({
-        //         where: { id: sessionCart.id },
-        //         data: {
-        //           userId: user.id,
-        //         },
-        //       });
-        //     }
-        //   }
-        // }
-
-        if (["signIn", "signUp"].includes(trigger)) {
-          const cookiesObject = await cookies();
-          const sessionCartId = cookiesObject.get("sessionCartId")?.value;
-
-          const sessionCart = await prisma.cart.findFirst({
-            where: { sessionCartId },
-          });
-
-          if (!sessionCart) return;
-
-          if (sessionCart.userId !== user.id) {
-            console.log("runs here");
-
-            // Delete current user cart
-            await prisma.cart.deleteMany({
-              where: { userId: user.id },
+          if (sessionCartId) {
+            const sessionCart = await prisma.cart.findFirst({
+              where: { sessionCartId },
             });
 
-            // Assign new cart
-            await prisma.cart.update({
-              where: { id: sessionCart.id },
-              data: { userId: user.id },
-            });
+            if (sessionCart) {
+              //delete current user cart
+              await prisma.cart.deleteMany({
+                where: { userId: user.id },
+              });
+
+              //assign new cart
+              await prisma.cart.update({
+                where: { id: sessionCart.id },
+                data: {
+                  userId: user.id,
+                },
+              });
+            }
           }
         }
       }
