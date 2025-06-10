@@ -24,7 +24,6 @@ import {
   approvePaypalOrder,
 } from "@/lib/actions/order.actions";
 import { toast } from "sonner";
-import { CheckIcon } from "lucide-react";
 
 const OrderDetailsTable = ({
   order,
