@@ -24,6 +24,7 @@ import {
   approvePaypalOrder,
 } from "@/lib/actions/order.actions";
 import { toast } from "sonner";
+import { CheckIcon } from "lucide-react";
 
 const OrderDetailsTable = ({
   order,
@@ -59,9 +60,15 @@ const OrderDetailsTable = ({
   const handleApprovePaypalOrder = async (data: { orderID: string }) => {
     const res = await approvePaypalOrder(order.id, data);
 
-    console.log("res", res);
-
-    res.success ? toast.success(res.message) : toast.error(res.message);
+    if (res.success) {
+      toast.success(res.message, {
+        icon: (
+          <CheckIcon className="text-green-500 w-5 h-5 rounded-full bg-green-100" />
+        ),
+      });
+    } else {
+      toast.error(res.message);
+    }
   };
 
   const {
