@@ -61,11 +61,7 @@ const OrderDetailsTable = ({
     const res = await approvePaypalOrder(order.id, data);
 
     if (res.success) {
-      toast.success(res.message, {
-        icon: (
-          <CheckIcon className="text-green-500 w-5 h-5 rounded-full bg-green-100" />
-        ),
-      });
+      toast(res.message);
     } else {
       toast.error(res.message);
     }
