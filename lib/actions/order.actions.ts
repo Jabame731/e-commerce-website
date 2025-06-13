@@ -305,3 +305,10 @@ export async function getMyOrders({
     totalPages: Math.ceil(dataCount / limit),
   };
 }
+
+//get sales data and order summary
+export async function getOrderSummary() {
+  //get counts for each resource
+  //calculate the total sales
+  //
+}

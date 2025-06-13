@@ -33,8 +33,6 @@ export const config = {
           },
         });
 
-        console.log("user && user.password", user && user.password);
-
         //check if user exist and if the password matches
         if (user && user.password) {
           const isMatch = compareSync(
@@ -54,13 +52,6 @@ export const config = {
             };
           }
         }
-
-        console.log("user", {
-          id: user?.id,
-          name: user?.name,
-          email: user?.email,
-          role: user?.role,
-        });
 
         //if user does not exist or password does not match return null
         return null;
