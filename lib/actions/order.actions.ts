@@ -310,5 +310,5 @@ export async function getMyOrders({
 export async function getOrderSummary() {
   //get counts for each resource
   //calculate the total sales
-  //
+  ///
 }
