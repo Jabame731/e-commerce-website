@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { updateUserProfile } from "@/lib/actions/user.actions";
 import { updateProfileSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

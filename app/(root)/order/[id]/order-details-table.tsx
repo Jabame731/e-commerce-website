@@ -98,7 +98,11 @@ const OrderDetailsTable = ({
           startTransition(async () => {
             const res = await updateOrderToPaidCOD(order.id);
 
-            res.success ? toast.success(res.message) : toast.error(res.message);
+            if (res.success) {
+              toast.success(res.message);
+            } else {
+              toast.error(res.message);
+            }
           })
         }
       >
@@ -118,7 +122,11 @@ const OrderDetailsTable = ({
           startTransition(async () => {
             const res = await deliverOrder(order.id);
 
-            res.success ? toast.success(res.message) : toast.error(res.message);
+            if (res.success) {
+              toast.success(res.message);
+            } else {
+              toast.error(res.message);
+            }
           })
         }
       >
