@@ -89,7 +89,6 @@ const OrderDetailsTable = ({
 
   const MarkAsPaidButton = () => {
     const [isPending, startTransition] = useTransition();
-
     return (
       <Button
         type="button"
@@ -113,7 +112,6 @@ const OrderDetailsTable = ({
 
   const MarkAsDeliveredButton = () => {
     const [isPending, startTransition] = useTransition();
-
     return (
       <Button
         type="button"
@@ -138,7 +136,6 @@ const OrderDetailsTable = ({
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
-
       <div className="grid md:grid-cols-3 md:gap-5">
         <div className="col-span-2 space-y-4 overflow-x-auto">
           <Card>
@@ -254,8 +251,6 @@ const OrderDetailsTable = ({
                   </PayPalScriptProvider>
                 </div>
               )}
-
-              {/* cash on delivery */}
               {isAdmin && !isPaid && paymentMethod === "CashOnDelivery" && (
                 <MarkAsPaidButton />
               )}
