@@ -48,11 +48,7 @@ const ProfileFormPage = () => {
 
     await update(newSession);
 
-    toast.success(res.message, {
-      icon: (
-        <CheckIcon className="text-green-500 w-5 h-5 rounded-full bg-green-100" />
-      ),
-    });
+    toast.success(res.message);
 
     router.refresh();
   };
