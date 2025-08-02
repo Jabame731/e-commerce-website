@@ -1,4 +1,6 @@
+import ProductForm from "@/components/admin/product-form";
 import { getProductById } from "@/lib/actions/product.actions";
+import { Product } from "@/types";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -15,13 +17,22 @@ const AdminProductUpdatePage = async (props: {
 
   if (!id) return notFound();
 
-  const product = await getProductById(id);
+  const res = await getProductById(id);
 
-  if (!product) {
+  if (!res.success) {
     return notFound();
   }
 
-  return <></>;
+  return (
+    <div className="space-y-8 max-w-5xl mx-auto">
+      <h1 className="h2-bold">Update Product</h1>
+      <ProductForm
+        type="Update"
+        product={res.data as Product}
+        productId={res.data?.id}
+      />
+    </div>
+  );
 };
 
 export default AdminProductUpdatePage;

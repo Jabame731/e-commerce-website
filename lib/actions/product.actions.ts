@@ -26,11 +26,21 @@ export async function getProductBySlug(slug: string) {
 
 //get single product byt its ID
 export async function getProductById(productId: string) {
-  const data = await prisma.product.findFirst({
-    where: { id: productId },
-  });
+  try {
+    const data = await prisma.product.findFirst({
+      where: { id: productId },
+    });
 
-  return convertToPlainObject(data);
+    return {
+      success: true,
+      data: convertToPlainObject(data),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: formatError(error),
+    };
+  }
 }
 
 //get all products
