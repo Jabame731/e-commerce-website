@@ -13,7 +13,6 @@ import {
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { CheckIcon } from "lucide-react";
 
 const DeleteDialog = ({
   id,
@@ -34,11 +33,7 @@ const DeleteDialog = ({
         toast(res.message);
       } else {
         setOpen(false);
-        toast.success(res.message, {
-          icon: (
-            <CheckIcon className="text-green-500 w-5 h-5 rounded-full bg-green-100" />
-          ),
-        });
+        toast.success(res.message);
       }
     });
   };
