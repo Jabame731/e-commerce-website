@@ -49,12 +49,18 @@ export async function getAllProducts({
   query,
   limit = PAGE_SIZE,
   page,
-}: // category,
-{
+  category,
+  price,
+  rating,
+  sort,
+}: {
   query: string;
   limit?: number;
   page: number;
   category?: string;
+  price?: string;
+  rating?: string;
+  sort?: string;
 }) {
   const queryFilter: Prisma.ProductWhereInput =
     query && query !== "all"
@@ -163,4 +169,15 @@ export async function getAllCategories() {
   });
 
   return data;
+}
+
+//get featured products
+export async function getFeaturedProducts() {
+  const data = await prisma.product.findMany({
+    where: { isFeatured: true },
+    orderBy: { createdAt: "desc" },
+    take: 4,
+  });
+
+  return convertToPlainObject(data);
 }
